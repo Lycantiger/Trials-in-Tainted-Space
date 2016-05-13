@@ -4,6 +4,7 @@
 	import classes.GLOBAL;
 	import classes.Items.Miscellaneous.*;
 	import classes.Items.Transformatives.Catnip;
+	import classes.Items.Transformatives.ChumChews;
 	import classes.Items.Transformatives.OvirAce;
 	import classes.Items.Transformatives.OvirPositive;
 	import classes.kGAMECLASS;
@@ -14,7 +15,7 @@
 		//constructor
 		public function Jade()
 		{
-			this._latestVersion = 8;
+			this._latestVersion = 9;
 			this.version = _latestVersion;
 			this._neverSerialize = false;
 			
@@ -57,6 +58,7 @@
 			this.inventory.push(new KnotAProblem());
 			this.inventory.push(new HorsePill());
 			this.inventory.push(new AusarTreats());
+			this.inventory.push(new ChumChews());
 			inventory.push(new OvirAce());
 			inventory.push(new OvirPositive());
 			this.inventory.push(new Catnip());
@@ -218,6 +220,11 @@
 		public function UpgradeVersion7(d:Object):void
 		{
 			d.inventory.push(new Catnip().getSaveObject());
+		}
+		
+		public function UpgradeVersion8(d:Object):void
+		{
+			d.inventory.push(new ChumChews().getSaveObject());
 		}
 		
 		override public function onLeaveBuyMenu():void
