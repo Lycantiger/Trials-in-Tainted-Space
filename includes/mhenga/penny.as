@@ -66,20 +66,30 @@ public function showPennyName():void
 	if(flags["MET_PENNY"] == undefined) userInterface.showName("POLICE\nWOMAN");
 	else userInterface.showName("\nPENNY");
 }
+public function pennyBustDisplay(nude:Boolean = false):String
+{
+	// 9999 - Special artist exceptions!
+	// Umm... leaving this as-is for now... Art for Penny is kinda all over the place.
+	
+	var sBust:String = "PENNY";
+	if(nude) sBust += "_NUDE";
+	
+	if(flags["PENNY_BADGER_BIMBO"] != undefined || pennyIsCumSlut())
+	{
+		sBust = "PENNY_BIMBO";
+		if(penny.hasCock(GLOBAL.TYPE_EQUINE)) sBust += "_HORSE";
+	}
+	
+	return sBust;
+}
 public function showPennyBust(nude:Boolean = false):void
 {
 	if(flags["PENNY_BADGER_BIMBO"] != undefined || pennyIsCumSlut())
 	{
-		var pennyBust:String = "PENNY_BIMBO";
-		if(penny.hasCock(GLOBAL.TYPE_EQUINE)) pennyBust = "PENNY_BIMBO_HORSE";
-		if(flags["SEEN_BIMBO_PENNY"] != undefined && (hours < 8 || hours >= 17)) showBust("FLAHNE_NUDE",pennyBust);
-		else showBust(pennyBust);
+		if(flags["SEEN_BIMBO_PENNY"] != undefined && (hours < 8 || hours >= 17)) showBust(flahneBustDisplay(true),pennyBustDisplay(true));
+		else showBust(pennyBustDisplay(true));
 	}
-	else
-	{
-		if(!nude) showBust("PENNY");
-		else showBust("PENNY_NUDE");
-	}
+	else showBust(pennyBustDisplay(nude));
 }
 public function showPenny(nude:Boolean = false):void
 {
@@ -349,7 +359,7 @@ public function getSpitRoastedForPenny():void {
 	
 	output("\n\nYour waspish suitors pull out of you at the same time, wings buzzing. Your shaking limbs tremble, trying to hold you up as they switch places, floating past each other as they reposition, presenting you with a yellow-skinned, cum-covered cock to suck. You smile drunkenly up at the Zil and open wide to the sound of Penny’s moans.");
 	
-	output("\n\nThe fox-morph watches you fuck these bug-men with her cunt dribbling on the tiled floor. Her mask fell off during her frenzied self-pleasure. She pants as she aggressively smooshes her hand deep into her now-esposed tits, burying her palm wrist-deep in boob. Her other hand is halfway buried in her snatch, leaving only her thumb to tend to a tiny, barely-visible clit. Penny grunts bestially as her muscles lock, her body shivering lustily before she sags against the wall, still watching. Her hand comes partway out of her reddened slit, though she continues to idly stroke a single digit through her folds as she watches the cum ooze from you.");
+	output("\n\nThe fox-morph watches you fuck these bug-men with her cunt dribbling on the tiled floor. Her mask fell off during her frenzied self-pleasure. She pants as she aggressively smooshes her hand deep into her now-exposed tits, burying her palm wrist-deep in boob. Her other hand is halfway buried in her snatch, leaving only her thumb to tend to a tiny, barely-visible clit. Penny grunts bestially as her muscles lock, her body shivering lustily before she sags against the wall, still watching. Her hand comes partway out of her reddened slit, though she continues to idly stroke a single digit through her folds as she watches the cum ooze from you.");
 	output("\n\nYou’re filled on both sides once more, each zil getting sloppy seconds in one of your holes. Gushing everywhere, the honey quickly coats the floor");
 	if(pc.wetness() >= 3) output(" along with your own moisture");
 	output(", squirting from your well-used holes. The constant sexual onslaught sends you to orgasm after orgasm, almost one on top of the other. Your mind seems to be turning to putty under the ecstatic assault, shutting down one thought process after another as you ride pleasure unending. Dimly, you’re aware of one sloppy honey injection after another...");
@@ -3194,13 +3204,7 @@ public function pennyVsFlahneWhoWillOutslutWho():void
 {
 	clearOutput();
 	author("Abe E. Seedy");
-	var pennyBust:String = "PENNY_NUDE";
-	if(flags["PENNY_BADGER_BIMBO"] != undefined || pennyIsCumSlut())
-	{
-		pennyBust = "PENNY_BIMBO";
-		if(penny.hasCock(GLOBAL.TYPE_EQUINE)) pennyBust = "PENNY_BIMBO_HORSE";
-	}
-	userInterface.showBust(pennyBust, "FLAHNE_NUDE");
+	showBust(pennyBustDisplay(true), flahneBustDisplay(true));
 	var x:int = pc.biggestCockIndex(); // Fenstyle yo
 
 	output("You mention to Penny that you had a very interesting talk about her with Flahne recently. At the mention of Flahne’s name Penny’s ears prick up with almost comical enthusiasm, betraying her interest as they literally swivel slightly towards you.");

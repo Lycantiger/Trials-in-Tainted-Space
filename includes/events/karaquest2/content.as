@@ -2312,6 +2312,7 @@ public function kq2AmaraPCVictory():void
 	{
 		output(" And just in time: you cover your eyes as a nuke goes off in the caldera, a flash of light followed by a shockwave that makes your teeth ache. Luckily, the re-activated shields protect you from harm.");
 		flags["KQ2_NUKE_EXPLODED"] = 1;
+		if(shipLocation == "600") shipLocation = "SPACE";
 	}
 
 	// This should work, because we know we're not gonna be looting anything...
@@ -2439,6 +2440,7 @@ public function kq2AmaraSpecialEnd():void
 	{
 		output(" Especially after the nuke goes off, flashing in the distance in your rear mirror.");
 		flags["KQ2_NUKE_EXPLODED"] = 1;
+		if(shipLocation == "600") shipLocation = "SPACE";
 	}
 	
 	output("\n\nThe trip back to the DMZ is quiet. You try not to think, just letting your body go on autopilot as you cruise back to the familiar strip of tarmac in the desert wastes. It’s not hard to find a spacer to hitch-hike with back to the smuggler’s base, though in your state, you get more than few odd glances until you do.");
@@ -2463,7 +2465,7 @@ public function kq2AmaraSpecialEnd():void
 public function kq2KaraSexytimes():void
 {
 	clearOutput();
-	showKara();
+	showKara(true);
 
 	output("Kara’s offering, and you’ve had your eyes on this pretty kitty since the moment you laid eyes on her. There’s no more fitting reward for all your selfless help than to take her up on her offer, and see what this sly cat’s got under that sleek suit of hers. You can’t wait.");
 	
@@ -2506,7 +2508,7 @@ public function kq2KaraSexytimes():void
 public function kq2KaraTakeKittydick():void
 {
 	clearOutput();
-	showKara();
+	showKara(true);
 
 	output("Every little motion of your love causes her lengthy cat-cock to rub against your [pc.belly], letting you feel the ring of feline nubs circling her slender cockhead. The thought of them inside you, stirring up your insides, is enough to make");
 	if (!pc.hasVagina()) output(" your ass yearn for her touch");
@@ -2607,7 +2609,7 @@ public function kq2KaraTakeKittydick():void
 public function kq2KaraFuckKittysKitty():void
 {
 	clearOutput();
-	showKara();
+	showKara(true);
 
 	output("You decide to take the initiative, grabbing Kara’s juicy hips and pulling her towards the tumescent span of your [pc.cock]. She gives a little gasp as your prick brushes up between her legs, finding a hot, wet gash hidden behind her churning sack. Kara smiles at you, rocking her hips back against your [pc.cockHead]. She gives you a rough push down onto the bed, putting your back on the sheets and her hands firmly planted on your [pc.chest].");
 	
@@ -2711,7 +2713,7 @@ public function kq2PostKaraSexyCombine(gotFucked:Boolean = false):void
 public function kq2PostKaraSexyCombineGo():void
 {
 	clearOutput();
-	showKara();
+	showKara(true);
 
 	output("You tell Kara you do need to leave - but you enjoyed the time you spent together. She smiles at that, propping herself up on an elbow to watch you as you swing out of bed and gather your discarded [pc.gear].");
 	
@@ -2732,8 +2734,6 @@ public function kq2PostKaraSexyCombineGo():void
 	}
 	else
 	{
-		currentLocation = "SHIP INTERIOR";
-		genericSleep(480);
 		CombatManager.genericVictory();
 	}
 }
@@ -2741,7 +2741,7 @@ public function kq2PostKaraSexyCombineGo():void
 public function kq2PostKaraSexyCombineStay():void
 {
 	clearOutput();
-	showKara();
+	showKara(true);
 
 	output("You answer Kara with another kiss, holding the cat-girl close and closing your eyes. The last thing you see is her smile, cobalt tails brushing against your [pc.legOrLegs].");
 
@@ -2758,6 +2758,9 @@ public function kq2PostKaraSexyCombineStay():void
 	
 	output("\n\nKara nods understandingly, and walks you to the airlock. <i>“If you ever need anything, [pc.name],”</i> she starts, lacing her fingers with yours.");
 	
+	currentLocation = "SHIP INTERIOR";
+	genericSleep(480);
+	
 	if (!pc.hasStatusEffect("Kara Fuck Alternate Path"))
 	{
 		output(" <i>“I owe you. So, so much.”</i>");
@@ -2770,8 +2773,6 @@ public function kq2PostKaraSexyCombineStay():void
 		
 		output("\n\nThe airlock snaps closed behind you, and you make the journey back to your own ship in silence.");
 
-		currentLocation = "SHIP INTERIOR";
-		genericSleep(480);
 		clearMenu();
 		addButton(0, "Next", mainGameMenu);
 	}
@@ -2795,8 +2796,6 @@ public function kq2PostKaraSexyCombineStay():void
 
 		pc.removeStatusEffect("Kara Fuck Alternate Path");
 
-		currentLocation = "SHIP INTERIOR";
-		genericSleep(480);
 		CombatManager.genericVictory();
 	}
 }
@@ -2869,7 +2868,8 @@ public function kq2NukeExplodesLater():void
 		clearMenu();
 		addButton(0, "Next", mainGameMenu);
 	}
-
+	
+	if(shipLocation == "600") shipLocation = "SPACE";
 	processTime(360);
 }
 
@@ -2893,7 +2893,6 @@ public function flyToMyrellionDeepCaves():void
 	{
 		output("You fly to the nuked planet of Myrellion, carefully guiding your vessel down towards the ground fissure that leads to the area just above Taivra’s palace. You finally park at the bottom of a nearby cavern");
 		if(leaveShipOK()) output(" and step out of your ship.");
-
 	}
 }
 

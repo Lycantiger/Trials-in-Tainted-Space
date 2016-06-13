@@ -9,6 +9,11 @@ import classes.RoomClass;
 
 public function uvetoShipDock():Boolean
 {
+	removeUvetoCold();
+	
+	//Shade Uveto welcome message.
+	getLetterFromShade();
+	
 	if (tryProcKaedeUvetoEncounter()) return true;
 	return false;
 }
@@ -206,6 +211,10 @@ public function flyToUveto():void
 	else
 	{
 		flags["DO UVETO ICEQUEEN ENTRY"] = undefined;
+		shipLocation = "UVS F15";
+		currentLocation = "SHIP INTERIOR";
+		generateMap();
+		showLocationName();
 		addButton(0, "Next", iceQueenUvetoEntry, flags["VISITED_UVETO"]);
 	}
 
@@ -219,6 +228,8 @@ public function actuallyArriveAtUvetoStation():void
 
 	output("<b>An hour passes...</b>");
 	
+	processTime(50 + rand(16));
+	
 	output("\n\nJust as you’re getting through with the mountain of legal gobbledygook the tove sent you, your proximity sensors alert you to the approach of a large ship bearing the trade IDs of the Camarilla. You respond to a message blip ordering you to power down weapons and shields and follow the <i>“wabeshift”</i> to Uveto Station’s docking terminal. You do as you’re ordered and switch the autopilot on, letting it dog the Camarilla ship in towards the station.");
 	
 	output("\n\nUveto Station is a small affair, one of the pre-fab low-orbit control stations common on frontier worlds too inhospitable to support a full colony. Why it’s in what has been a core world for centuries, you have no idea. A thick tether connects it to the planet below - a space elevator, you imagine - and several long, curving arms extend from the central unit of the station, providing a great deal of docking space. You suppose there must not be a spaceport on the surface of the planet.");
@@ -227,7 +238,7 @@ public function actuallyArriveAtUvetoStation():void
 	
 	output("\n\nYou grab your gear");
 	if(leaveShipOK()) output(" and head onto the station.");
-
+	
 	clearMenu();
 	addButton(0, "Next", mainGameMenu);
 }
@@ -557,6 +568,7 @@ public function uvetoAwakenInMedCenter(rescuer:String):void
 	else output(" [pc.legOrLegs]");
 	output(" and make for your gear....");
 
+	removeUvetoCold();
 	pc.HP(pc.HPMax());
 	pc.energy(pc.energyMax());
 	currentLocation = "UVI H32";
@@ -566,10 +578,19 @@ public function uvetoAwakenInMedCenter(rescuer:String):void
 	addButton(0, "Next", mainGameMenu);
 }
 
+public function templeStreetBonus():Boolean
+{
+	// Buzzer for Shade's house.
+	meetingShadeAtHouse(0);
+	return false;
+}
+
 public function uvetoBarBonus():Boolean
 {
 	output("\n\nAn old-style videoscreen is on in the corner, displaying a perverted-looking documentary about the infamous male ultraporn-star, Tank Kannon.");
 	addButton(0, "Watch", tankKannonBiopic, undefined, "Watch", "It looks like there's a biopic about the incredibly endowed ultraporn-star, Tank Kannon, on if you want to watch it.");
+	// Shade events.
+	meetingShadeAtUvetoBar(1);
 	return false;
 }
 
@@ -634,7 +655,7 @@ public function watchTankBlowFirstLoadEpilogue():void
 	output("\n\nOther voices take up the call. <i>“Yeah, Steph Irson’s better than this shit!”</i>");
 	output("\n\nThe first hollers back, <i>“Hey, Tank’s a national treasure, fuck-face!”</i>");
 	output("\n\n<i>“If you like uselessly huge dicks instead of a fine, female form!”</i>");
-	output("\n\nJust when you think there’s going to be a fight, someone changes the channel and offers the two would-be-combatants new drinks. Crises averted!");
+	output("\n\nJust when you think there’s going to be a fight, someone changes the channel and offers the two would-be-combatants new drinks. Crisis averted!");
 	processTime(1);
 	IncrementFlag("TANK_EP1_WATCHED");
 	clearMenu();

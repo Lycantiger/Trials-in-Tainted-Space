@@ -155,7 +155,7 @@ public function queenOfTheDeepPCLoss():void
 	
 	if (pc.hasCock())
 	{
-		output(" Your [pc.multiCocks] grow");
+		output(" Your [pc.cocks] grow");
 		if (pc.cocks.length > 1) output("s");
 		output(" rigid, pressing into the queen’s belly. She coos delightedly and reaches down to stroke");
 		if (pc.cocks.length == 1) output(" it");
@@ -389,7 +389,7 @@ public function queenOfTheDeepSurrenderII(fromCombat:Boolean):void
 	output("\n\nYou open your mouth to speak, to answer her claims, but instantly your lips are locked with hers, tongues entangling as the queen grows more aggressive. Her tendrils assail your bare body, working hard to slather you with their pink discharge. You feel the heat of venom on you almost instantly, rousing your senses.");
 	if (pc.hasCock())
 	{
-		output(" Your [pc.multiCocks] grow");
+		output(" Your [pc.cocks] grow");
 		if (pc.cocks.length == 1) output("s");
 		output(" rigid, pressing into the queen’s belly. She coos delightedly and reaches down to stroke it, sending shivers of pleasure through you as her blued fingers wrap around your length.");
 	}
@@ -1067,7 +1067,7 @@ public function queenBellyMovementEvent():void
 {
 	clearOutput();
 	
-	output("You find your hands idly drifting down to your [pc.belly], caressing the taut bulge of pregnant flesh. As if responding to your touch, you feel the queen's spawn inside you moving inside you, squirming around just beneath the surface. One seems to find its way directly to your hand, brushing against your palm through the thin barrier of your [pc.skinFurScales].");
+	output("You find your hands idly drifting down to your [pc.belly], caressing the taut bulge of pregnant flesh. As if responding to your touch, you feel the queen's spawn inside you moving, squirming around just beneath the surface. One seems to find its way directly to your hand, brushing against your palm through the thin barrier of your [pc.skinFurScales].");
 
 	output("\n\nYou smile to yourself and rub back, assuring the spawn inside you that you're here, and that they're safe and loved. A feeling of happiness floods through you at that, and you find yourself smiling dumbly as you proceed.");
 	

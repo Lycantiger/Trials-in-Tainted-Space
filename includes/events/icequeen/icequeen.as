@@ -45,11 +45,16 @@ public function showZaalt(nude:Boolean = false):void
 	if(nude) showBust("ZAALT_NUDE");
 	else showBust("ZAALT");
 	//showBust("MILODANMALE");
-	showName("ICE\nQUEEN");
+	if(inCombat()) showName("CAPT.\nKANDAR");
+	else showName("ICE\nQUEEN");
 }
 
 public function iceQueenMessageHelpII():void
 {
+	shipLocation = "SPACE";
+	currentLocation = "SPACE";
+	showLocationName();
+	
 	clearOutput();
 	showZaalt();
 
@@ -467,6 +472,8 @@ public function iceQueenLetsActuallyGo():void
 {
 	clearOutput();
 	showZaalt();
+	currentLocation = "SHIP INTERIOR";
+	showLocationName();
 
 	output("You finally board your ship once more, now with Captain Kandar in tow. The bridge is a short walk away, and you quickly have the coordinates for Uveto plugged in and set the auto-pilot to task.");
 	
@@ -499,6 +506,7 @@ public function iceQueenUvetoEntry(oldUvetoVisitFlagValue:* = undefined):void
 
 	shipLocation = "UVS F15";
 	currentLocation = "UVS F15";
+	showLocationName();
 
 	if (oldUvetoVisitFlagValue == undefined)
 	{
@@ -638,6 +646,8 @@ public function iceQueenLossToZaalt():void
 
 public function iceQueenBeatZaalt():void
 {
+	showZaalt();
+	
 	output("Zaalt staggers back, grabbing the sides of his head and screaming in agony. Your eyes go wide as the bestial cat-man’s eyes roll up in his head, and he falls onto his back. He convulses for a moment, then falls still.");
 	
 	output("\n\nWhat the hell was that all about?");
@@ -714,6 +724,9 @@ public function iceQueenBeatZaaltHelpHim():void
 {
 	clearOutput();
 	showZaalt();
+	userInterface.hideNPCStats();
+	userInterface.leftBarDefaults();
+	generateMap();
 
 	flags["ICEQUEEN COMPLETE"] = 3;
 
@@ -750,6 +763,7 @@ public function iceQueenBeatZaaltHelpHim():void
 	
 	output("\n\nHe grimaces beneath his tusks, avoiding your gaze. <i>“I’m... what most people would call a psyker. A lot of Uvetan races have latent psionics. Emphasis on latent! My implant, it’s supposed to help focus mental energy, let us actually use our abilities. But - agh, damn that stings!”</i>");
 
+	output("\n\n");
 	// 9999
 	if (!pc.myMiddleNameIsJensen()) output("Do implants just rupture like that all the time? If so, that's fucking horrifying... and t");
 	else output("T");
@@ -827,6 +841,7 @@ public function iceQueenNoKara():void
 
 	pc.credits += 10000;
 	currentLocation = "UVI R32"; // 9999 Uveto cafe
+	generateMap();
 	addUvetoCold();
 
 	output("<i>“There’s our guy,”</i> Zaalt says, subtly nodding his head to where a young man is leaning back at a table against the far wall. He’s obviously not human, covered in a thin layer of navy blue fur culminating in a mop of dark red hair and a pair of perky, rabbit-like ears. Your contact’s dressed in a black flight jacket, unzipped to show off a blood red T-shirt with the words <i>HEAVY METAL BAND</i> inscribed across it in obviously ironic swirling font.");
@@ -870,7 +885,7 @@ public function showKaraAndZaalt():void
 	author("Savin");
 	showName("KARA &\nZAALT");
 	//showBust("KARA", "MILODANMALE"); 9999
-	showBust("KARA", "MILODANMALE");
+	showBust("KARA", "ZAALT");
 }
 
 public function iceQueenKaraShowsUp():void
@@ -962,8 +977,8 @@ public function iceQueenKaraShowsUpInterrupt():void
 	
 	output("\n\nZaalt’s response is a bewildered <i>“Uhhh,”</i> followed by yanking his hand out of your grasp, plying his great strength and stature to free himself. <i>“Hey, uh, look, this isn’t-”</i>");
 	
-	output("\n\n<i>“");
-	if (kara.isAss()) output("Oh my <b>God</b>, is this fucking amateur hour?”</i> Kara snarls, reaching across the table and snatching the implant out of Zaalt’s hand before anyone can see it. <i>“Tell me you didn’t try to pull one over [pc.name] <b></i>Steele<i></b>.”</i>");
+	output("\n\n");
+	if (kara.isAss()) output("<i>“Oh my <b>God</b>, is this fucking amateur hour?”</i> Kara snarls, reaching across the table and snatching the implant out of Zaalt’s hand before anyone can see it. <i>“Tell me you didn’t try to pull one over [pc.name] <b></i>Steele<i></b>.”</i>");
 	else output("<i>“Knock it off!”</i> Kara whispers, grabbing the implant and stuffing it, bandages and all, into her catsuit and zipping herself up to the neck. <i>“Now what’s going on here? Zaalt, what gives?”</i>");
 	
 	output("\n\nYou fix Kara with a stare and say that Zaalt here has been playing you from the start. Not only did he lead you into this under false pretenses - which seems to be a recurring theme for her and her compatriots now - but he lost his damn mind when you arrived in orbit and attacked you. Apparently that implant, the one he’s trying to pawn off on her, was responsible in some way. Everything about this situation is bullshit, and you’re fucking sick of it!");

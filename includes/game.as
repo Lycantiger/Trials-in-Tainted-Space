@@ -58,6 +58,7 @@ public function processEventBuffer():Boolean
 	if (eventBuffer.length > 0)
 	{
 		clearOutput();
+		clearBust();
 		output("<b>" + possessive(pc.short) + " log:</b>" + eventBuffer);
 		showLocationName();
 		eventBuffer = "";
@@ -90,7 +91,7 @@ public function setNavDisabled(addUmask:uint):void
 
 public function showLocationName():void
 {
-	if(InShipInterior()) setLocation("SHIP\nINTERIOR", rooms[rooms["SHIP INTERIOR"].outExit].planet, rooms[rooms["SHIP INTERIOR"].outExit].system);
+	if(InShipInterior()) setLocation("SHIP\nINTERIOR", rooms[shipLocation].planet, rooms[shipLocation].system);
 	else setLocation(rooms[currentLocation].roomName, rooms[currentLocation].planet, rooms[currentLocation].system);
 }
 
@@ -154,7 +155,7 @@ public function mainGameMenu(minutesMoved:Number = 0):void {
 		output("\n\n<b>BUG REPORT: TEMP NUDITY STUCK ON.</b>");
 	//Standard buttons:
 	clearMenu(false);
-	userInterface.showBust("none");
+	clearBust();
 	inSceneBlockSaving = false;
 	updatePCStats();
 	//Inventory shit
@@ -245,9 +246,20 @@ public function mainGameMenu(minutesMoved:Number = 0):void {
 			addButton(7, rooms[currentLocation].outText, move, rooms[currentLocation].outExit);
 		}
 	}
+	if (currentLocation == "SHIP INTERIOR")
+	{
+		if (rooms[currentLocation].outExit && isNavDisabled(NAV_OUT_DISABLE)) 
+		{
+			addDisabledButton(7,rooms[currentLocation].outText,rooms[currentLocation].outText,"You can’t exit your ship here!");
+		}
+	}
 	if (currentLocation == shipLocation)
 	{
-		addButton(5, "Enter Ship", move, "SHIP INTERIOR");
+		if (isNavDisabled(NAV_IN_DISABLE))
+		{
+			addDisabledButton(5, rooms[currentLocation].inText, rooms[currentLocation].inText, "You can’t enter your ship here!");
+		}
+		else addButton(5, "Enter Ship", move, "SHIP INTERIOR");
 	}
 	
 	if (rooms[currentLocation].runAfterEnter != null) rooms[currentLocation].runAfterEnter();
@@ -266,12 +278,29 @@ public function generateMap():void
 {
 	generateMapForLocation(currentLocation);
 }
-
 public function generateMapForLocation(location:String):void
 {
 	userInterface.setMapData(mapper.generateMap(location));
 }
+public function generateLocationName(location:String):void
+{
+	setLocation(rooms[location].roomName, rooms[location].planet, rooms[location].system);
+}
+public function generateLocation(location:String):void
+{
+	generateMapForLocation(location);
+	generateLocationName(location);
+}
 
+public function backToPrimaryOutput():void
+{
+	clearBust();
+	userInterface.backToPrimaryOutput();
+}
+public function clearBust(forceNone:Boolean = false):void
+{
+	if(forceNone || !inCombat()) showBust("none");
+}
 public function showCodex():void
 {
 	userInterface.showCodex();
@@ -290,7 +319,7 @@ public function showCodex():void
 	//addGhostButton(3, "CHEEVOS", function():void { } );
 	addGhostButton(1, "Log", displayQuestLog, flags["TOGGLE_MENU_LOG"]);
 	if(flags["EMMY_QUEST"] >= 6 && flags["EMMY_QUEST"] != undefined) addGhostButton(3,"EmmyRemote",pushEmmysButtonsMenu);
-	addGhostButton(4, "Back", userInterface.showPrimaryOutput);
+	addGhostButton(4, "Back", backToPrimaryOutput);
 }
 
 // Temp display stuff for perks
@@ -308,8 +337,7 @@ public function showPerkListHandler(e:Event = null):void
 	}
 	else if (pButton.isActive && pButton.isHighlighted)
 	{
-		userInterface.showPrimaryOutput();
-		userInterface.DeGlowButtons();
+		backToPrimaryOutput();
 	}
 }
 
@@ -338,8 +366,7 @@ public function showMailsHandler(e:Event = null):void
 	}
 	else if (pButton.isActive && pButton.isHighlighted)
 	{
-		userInterface.showPrimaryOutput();
-		userInterface.DeGlowButtons();
+		backToPrimaryOutput();
 	}
 }
 
@@ -402,7 +429,9 @@ public function updateMailStatus():void
 public function showPerksList():void
 {
 	clearOutput2();
+	showPCBust();
 	setLocation("\nPERKS", "CODEX", "DATABASE");
+	author("");
 	clearGhostMenu();
 	addGhostButton(14, "Back", showPerkListHandler);
 	
@@ -425,31 +454,41 @@ public function showPerksList():void
 	output2("\n");
 }
 
-public function crewRecruited():Number
+public function crewRecruited(allcrew:Boolean = false):Number
 {
 	var counter:Number = 0;
+	
+	// Actual crew members
 	if (flags["RECRUITED_CELISE"] > 0) counter++;
 	if (reahaRecruited()) counter++;
 	if (!annoNotRecruited()) counter++;
 	if (bessIsFollower()) counter++;
-	if (hasGooArmor()) counter++;
-	if (varmintIsTame()) counter++;
 	if (yammiIsCrew()) counter++;
+	if (gooArmorIsCrew()) counter++;
+	
+	// Pets or other non-speaking crew members
+	if (allcrew)
+	{
+		if (hasGooArmor() && !gooArmorIsCrew()) counter++;
+		if (varmintIsTame()) counter++;
+	}
+	
 	return counter;
 }
 
-public function crew(counter:Boolean = false):Number {
+public function crew(counter:Boolean = false, allcrew:Boolean = false):Number {
 	if(!counter) {
 		clearOutput();
 		clearMenu();
 	}
 	
 	var crewMessages:String = "";
-	var count:int = 0;
+	var count:int = 0; // For actual crew members
+	var other:int = 0; // For pets or other non-speaking crew members
 	if(celiseIsCrew()) {
 		count++;
 		if(!counter) {
-			addButton(count - 1, "Celise", celiseFollowerInteractions);
+			addButton((count + other) - 1, "Celise", celiseFollowerInteractions);
 			crewMessages += "\n\nCelise is onboard, if you want to go see her. The ship does seem to stay clean of spills and debris with her around.";
 		}
 	}
@@ -458,7 +497,7 @@ public function crew(counter:Boolean = false):Number {
 		count++;
 		if(!counter)
 		{
-			addButton(count-1, "Reaha", approachShipBoardReahaWhyDidntSavinCodeThisHeWasntExhaustedYesterday);
+			addButton((count + other) - 1, "Reaha", approachShipBoardReahaWhyDidntSavinCodeThisHeWasntExhaustedYesterday);
 			crewMessages += "\n\nReaha is currently meandering around the ship, arms clutched under her hefty bosom, her nipples hooked up to a small portable milker.";
 		}
 	}
@@ -467,7 +506,7 @@ public function crew(counter:Boolean = false):Number {
 		count++;
 		if (!counter)
 		{
-			addButton(count - 1, "Anno", annoFollowerApproach);
+			addButton((count + other) - 1, "Anno", annoFollowerApproach);
 			if (hours >= 6 && hours <= 7 || hours >= 19 && hours <= 20) crewMessages += "\n\nAnno is walking about in her quarters, sorting through her inventory and organizing some of her equipment.";
 			else if (hours >= 12 || hours <= 13) crewMessages += "\n\nAnno's busy doing a quick workout in her quarters to the beat of some fast-paced ausar heavy metal. <i>“Gotta keep in shape!”</i> she says.";
 			else crewMessages += "\n\nAnno is sitting in the common area with her nose buried in half a dozen different data slates. It looks like she's splitting her attention between the latest Warp Gate research and several different field tests of experimental shield generators.";
@@ -479,7 +518,7 @@ public function crew(counter:Boolean = false):Number {
 		if (!counter)
 		{
 			crewMessages += "\n\n[bess.name] is wandering around the ship and keeping [bess.himHer]self busy. It shouldn't be that hard to find [bess.himHer].";
-			addButton(count - 1, bess.short, approachFollowerBess);
+			addButton((count + other) - 1, bess.short, approachFollowerBess);
 		}
 	}
 	if (yammiIsCrew())
@@ -488,24 +527,35 @@ public function crew(counter:Boolean = false):Number {
 		if (!counter)
 		{
 			crewMessages += "\n\n" + yammiShipBonusText();
-			addButton(count - 1, "Yammi", yammiInTheKitchen);
+			addButton((count + other) - 1, "Yammi", yammiInTheKitchen);
+		}
+	}
+	if (hasGooArmor() || gooArmorIsCrew())
+	{
+		if(gooArmorIsCrew()) count++; // Speaking crew member on ship.
+		else other++; // Mostly quiet member on person or in storage.
+		if (!counter)
+		{
+			crewMessages += gooArmorOnSelfBonus((count + other) - 1);
 		}
 	}
 	if (varmintIsCrew())
 	{
-		count++;
+		other++;
 		if (!counter)
 		{
-			crewMessages += varmintOnShipBonus(count - 1);
+			crewMessages += varmintOnShipBonus((count + other) - 1);
 		}
 	}
 	if(!counter) {
-		if(count > 0) {
+		if((count + other) > 0) {
+			clearBust();
 			showName("\nCREW");
 			output("Who of your crew do you wish to interact with?" + crewMessages);
 		}
 		addButton(14, "Back", mainGameMenu);
 	}
+	if(allcrew) return (count + other);
 	return count;
 }
 public function rest(deltaT:int = -1):void {
@@ -705,10 +755,13 @@ public function shipMenu():Boolean {
 		return true;
 	}
 	
+	// Location Exceptions
+	if(shipLocation == "600") myrellionLeaveShip();
+	
 	// Main ship interior buttons
 	if(currentLocation == "SHIP INTERIOR")
 	{
-		if (crew(true) > 0) addButton(2, "Crew", crew);
+		if (crew(true, true) > 0) addButton(2, "Crew", crew);
 		if (hasShipStorage()) addButton(3, "Storage", shipStorageMenuRoot);
 		else addDisabledButton(3, "Storage");
 		addButton(4, "Shower", showerMenu);
@@ -897,6 +950,7 @@ public function flyTo(arg:String):void {
 	var timeFlown:Number = (shortTravel ? 30 + rand(10) : 600 + rand(30));
 	StatTracking.track("movement/time flown", timeFlown);
 	processTime(timeFlown);
+	setLocation("SHIP\nINTERIOR", rooms[shipLocation].planet, rooms[shipLocation].system);
 	
 	if (!interruptMenu)
 	{
@@ -1413,6 +1467,16 @@ public function variableRoomUpdateCheck():void
 	
 	// KQuest
 	kquest2RoomStateUpdater();
+	if (flags["KQ2_MYRELLION_STATE"] == 2)
+	{
+		rooms["2I7"].removeFlag(GLOBAL.TAXI);
+		rooms["2I7"].addFlag(GLOBAL.SHIPHANGAR);
+	}
+	else
+	{
+		rooms["2I7"].removeFlag(GLOBAL.SHIPHANGAR);
+		rooms["2I7"].addFlag(GLOBAL.TAXI);
+	}
 }
 
 public function processTime(arg:int):void {
@@ -1594,23 +1658,34 @@ public function processTime(arg:int):void {
 			{
 				if (flags["KQ2_NUKE_STARTED"] + KQ2_NUKE_DURATION < GetGameTimestamp())
 				{
-					eventQueue.push(kq2NukeBadend);
+					if(eventQueue.indexOf(kq2NukeBadend) == -1) eventQueue.push(kq2NukeBadend);
 				}
 			}
 			// Left
 			else if (InShipInterior(pc))
 			{
-				eventQueue.push(kq2NukeExplodesLater);
 				flags["KQ2_NUKE_EXPLODED"] = 1;
+				if(eventQueue.indexOf(kq2NukeExplodesLater) == -1) eventQueue.push(kq2NukeExplodesLater);
 			}
-			
-			// Followup for Dane to send coordinates to the player, should the need arise
-			if (flags["KQ2_MYRELLION_STATE"] == 1)
+		}
+		
+		// Followup for Dane to send coordinates to the player, should the need arise
+		if (flags["KQ2_MYRELLION_STATE"] == 1)
+		{
+			if (flags["KQ2_DANE_COORDS_TIMER"] != undefined && flags["KQ2_DANE_COORDS_TIMER"] + 2880 < GetGameTimestamp())
 			{
-				if (flags["KQ2_DANE_COORDS_TIMER"] != undefined && flags["KQ2_DANE_COORDS_TIMER"] + 2880 < GetGameTimestamp())
-				{
-					eventQueue.push(kq2DaneCoordEmail);
-				}
+				if(eventQueue.indexOf(kq2DaneCoordEmail) == -1) eventQueue.push(kq2DaneCoordEmail);
+			}
+		}
+		
+		// Moving Shade to Uveto
+		if(flags["KQ2_SHADE_AWAY_TIME"] != undefined)
+		{
+			if(GetGameTimestamp() > (flags["KQ2_SHADE_AWAY_TIME"] + (24 * 60)))
+			{
+				if(flags["SHADE_ON_UVETO"] == undefined || flags["SHADE_ON_UVETO"] < 1) flags["SHADE_ON_UVETO"] = 1;
+				if(flags["SHADE_DISABLED"] == -1) flags["SHADE_DISABLED"] = undefined;
+				flags["KQ2_SHADE_AWAY_TIME"] = undefined;
 			}
 		}
 		
@@ -1749,13 +1824,15 @@ public function processTime(arg:int):void {
 					else pc.vaginas[x].shrinkCounter = 0;
 					//Reset for this cunt.
 					tightnessChanged = false;
-					if(pc.vaginas[x].loosenessRaw < 2) {}
-					else if(pc.vaginas[x].loosenessRaw >= 5 && pc.vaginas[x].shrinkCounter >= 60) tightnessChanged = true;
+					if(pc.vaginas[x].loosenessRaw >= 5 && pc.vaginas[x].shrinkCounter >= 60) tightnessChanged = true;
 					else if(pc.vaginas[x].loosenessRaw >= 4 && pc.vaginas[x].shrinkCounter >= 96) tightnessChanged = true;
 					else if(pc.vaginas[x].loosenessRaw >= 3 && pc.vaginas[x].shrinkCounter >= 132) tightnessChanged = true;
 					else if(pc.vaginas[x].loosenessRaw >= 2 && pc.vaginas[x].shrinkCounter >= 168) tightnessChanged = true;
+					else if(pc.vaginas[x].loosenessRaw >= pc.vaginas[x].minLooseness && pc.vaginas[x].shrinkCounter >= 204) tightnessChanged = true;
 					if(tightnessChanged) {
 						pc.vaginas[x].loosenessRaw--;
+						if (pc.vaginas[x].loosenessRaw < pc.vaginas[x].minLooseness)
+							pc.vaginas[x].loosenessRaw = pc.vaginas[x].minLooseness;
 						msg += "\n\n<b>Your";
 						if(pc.totalVaginas() > 1) msg += " " + num2Text2(x+1);
 						msg += " " + pc.vaginaDescript(x) + " has recovered from its ordeals, tightening up a bit.</b>";
@@ -1769,13 +1846,15 @@ public function processTime(arg:int):void {
 			else pc.ass.shrinkCounter = 0;
 			//Reset for this cunt.
 			tightnessChanged = false;
-			if(pc.ass.loosenessRaw < 2) {}
-			else if(pc.ass.loosenessRaw >= 5 && pc.ass.shrinkCounter >= 12) tightnessChanged = true;
+			if(pc.ass.loosenessRaw >= 5 && pc.ass.shrinkCounter >= 12) tightnessChanged = true;
 			else if(pc.ass.loosenessRaw >= 4 && pc.ass.shrinkCounter >= 24) tightnessChanged = true;
 			else if(pc.ass.loosenessRaw >= 3 && pc.ass.shrinkCounter >= 48) tightnessChanged = true;
 			else if(pc.ass.loosenessRaw >= 2 && pc.ass.shrinkCounter >= 72) tightnessChanged = true;
+			else if(pc.ass.loosenessRaw >= pc.ass.minLooseness && pc.ass.shrinkCounter >= 96) tightnessChanged = true;
 			if(tightnessChanged) {
 				pc.ass.loosenessRaw--;
+				if (pc.ass.loosenessRaw < pc.ass.minLooseness)
+					pc.ass.loosenessRaw = pc.ass.minLooseness;
 				if(pc.ass.loosenessRaw <= 4) eventBuffer += "\n\n<b>Your " + pc.assholeDescript() + " has recovered from its ordeals and is now a bit tighter.</b>";
 				else eventBuffer += "\n\n<b>Your " + pc.assholeDescript() + " recovers from the brutal stretching it has received and tightens up.</b>";
 			}
@@ -1806,7 +1885,9 @@ public function processTime(arg:int):void {
 					flags["BADGER_QUEST_TIMER"] = -1;
 				}
 			}
-
+			// Hourly femininity check
+			//eventBuffer += pc.fixFemininity();
+			
 			//Days ticks here!
 			if(hours >= 24) {
 				hours = 0;
@@ -1815,17 +1896,9 @@ public function processTime(arg:int):void {
 				//Unlock dat shiiit
 				if(flags["HOLIDAY_OWEEN_ACTIVATED"] == undefined && (isHalloweenish() || rand(100) == 0)) eventQueue.push(hollidayOweenAlert);
 				if(pc.hasPerk("Honeypot") && days % 3 == 0) honeyPotBump();
-				//Exhibitionism reduction!
-				if
-				(	!(pc.armor is EmptySlot)
-				&&	!(pc.lowerUndergarment is EmptySlot || pc.lowerUndergarment.hasFlag(GLOBAL.ITEM_FLAG_EXPOSE_FULL) || pc.lowerUndergarment.hasFlag(GLOBAL.ITEM_FLAG_EXPOSE_GROIN) || pc.lowerUndergarment.hasFlag(GLOBAL.ITEM_FLAG_EXPOSE_ASS))
-				&&	!(pc.upperUndergarment is EmptySlot || pc.upperUndergarment.hasFlag(GLOBAL.ITEM_FLAG_EXPOSE_FULL) || pc.upperUndergarment.hasFlag(GLOBAL.ITEM_FLAG_EXPOSE_CHEST))
-				)
-				{
-					if(pc.isChestExposed() && pc.isCrotchExposed() && pc.isAssExposed())
-						{ /* No reduction for a full set of exposed clothing! */ }
-					else pc.exhibitionism(-0.5);
-				}
+				//Exhibitionism reduction! Reduces exhibition if chest, crotch and ass are not all exposed
+				if(!(pc.isCrotchExposed() && pc.isAssExposed() && pc.isChestExposed()))
+					pc.exhibitionism(-0.5);
 				// New Texas cockmilker repair cooldown.
 				if (flags["MILK_BARN_COCKMILKER_BROKEN"] == undefined && flags["MILK_BARN_COCKMILKER_REPAIR_DAYS"] != undefined)
 				{
@@ -1880,7 +1953,9 @@ public function processTime(arg:int):void {
 				tryProcSaendraXPackEmail();
 				
 				// Manes grow out!
-				if(pc.hasPerk("Mane") && pc.hairLength <= 3) maneHairGrow();
+				if(pc.hasPerk("Mane")) maneHairGrow();
+				// Bodonkadonk-donks donkin'!
+				if(pc.hasPerk("Buttslut")) buttslutBootyGrow();
 				// Fecund Figure shape gain (Gains only while pregnant)
 				if(pc.hasPerk("Fecund Figure"))
 				{
@@ -1976,8 +2051,6 @@ public function processTime(arg:int):void {
 	if (!MailManager.isEntryUnlocked("annoweirdshit") && flags["MET_ANNO"] != undefined && flags["ANNO_MISSION_OFFER"] != 2 && flags["FOUGHT_TAM"] == undefined && flags["RUST_STEP"] != undefined && rand(20) == 0) goMailGet("annoweirdshit");
 	//KIRO FUCKMEET
 	if(!MailManager.isEntryUnlocked("kirofucknet") && flags["RESCUE KIRO FROM BLUEBALLS"] == 1 && kiroTrust() >= 50 && flags["MET_FLAHNE"] != undefined) { goMailGet("kirofucknet"); kiroFuckNetBonus(); }
-	//Shade KQ2 Mail
-	//9999 - if (!MailManager.isEntryUnlocked("kq2_shade_makeup") && flags["KQ2_SHADE_AWAY_TIME"] != undefined && flags["KQ2_SHADE_AWAY_TIME"] <= (GetGameTimestamp() - (9999 * 24 * 60))) goMailGet("kq2_shade_makeup");
 	//Other Email Checks!
 	if (rand(100) == 0) emailRoulette();
 	flags["HYPNO_EFFECT_OUTPUT_DONE"] = undefined;

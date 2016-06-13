@@ -74,7 +74,12 @@ public function showDeserter(gold:Boolean = false,nude:Boolean = false):void
 	{
 		if(flags["KNOW_RED_MYR_NAME"] == undefined) showName("RED MYR\nDESERTER");
 		else showName("\nBRIHA");
-		if(flags["BRIHA_INCUBATION_TIMER"] != undefined)
+		// 9999 - Special artist exceptions!
+		if(kGAMECLASS.gameOptions.configuredBustPreferences["BRIHA"] != "ADJATHA")
+		{
+			showBust("BRIHA");
+		}
+		else if(flags["BRIHA_INCUBATION_TIMER"] != undefined)
 		{
 			if(nude) showBust("BRIHA_PREGNANT_NUDE");
 			else showBust("BRIHA_PREGNANT");
@@ -136,7 +141,7 @@ public function approachMyrDeserters():void
 		//Combat!
 		else 
 		{
-			combatBlurb(true);
+			approachMyrDesertersCombatBlurb(true);
 		}
 	}
 	//RED MYR
@@ -155,13 +160,13 @@ public function approachMyrDeserters():void
 		//COMBAT!
 		else
 		{
-			combatBlurb(false);
+			approachMyrDesertersCombatBlurb(false);
 		}
 	}
 	// If either of the above are true, use the non-combative approach instead.
 }
 
-public function combatBlurb(gold:Boolean = false):void
+public function approachMyrDesertersCombatBlurb(gold:Boolean = false):void
 {
 	author("Jim Thermic");
 	var tEnemy:Creature;
@@ -2414,11 +2419,12 @@ public function stealDildoScene(gold:Boolean):void
 		if(knows) output("Briha");
 		else output("The myr");
 		output(" unbuttons her tattered uniform, teasing you with a glimpse of her modest bust");
-		if(!pc.isAss()) output(", but you gesture for her to get on with it}. Her breasts spill from her top and she moves on to her pants and panties, sliding them down with a shimmy.");
+		if(!pc.isAss()) output(", but you gesture for her to get on with it");
+		output(". Her breasts spill from her top and she moves on to her pants and panties, sliding them down with a shimmy.");
 
 		output("\n\nMeanwhile, you examine the vibrator. The power switch is easily found - it even has adjustable settings. ");
 		if(!knows) output("Briha");
-		else output("the red myr");
+		else output("The red myr");
 		output(" flinches when you crank it so high that it sounds like a tiny jackhammer, looking like she wishes you hadn’t. Either she’s a sexual lightweight, or she keeps it on low for another reason. Perhaps batteries are hard to come by out here? You readjust the setting and look up. Your lover-slash-victim is standing naked at attention, with proud little upright nipples.");
 		output("\n\n<i>“Sit and spread,”</i> you instruct.");
 		output("\n\n");
@@ -2450,7 +2456,7 @@ public function stealDildoScene(gold:Boolean):void
 		if(knows) output("Briha");
 		else output("Your lover");
 		output(" squirms when you nestle the toy in her vagina; her hips start to pump, trying to get the toy inside so she can feel the wonderful sensation of being filled, but you don’t allow it. You ring her opening indolently, watching her pinch and tweak her nipples with eyes shut tight, the very picture of female arousal. The pornographic display stirs your blood");
-		if(!pc.isNude() && pc.hasGenitals())
+		if(!pc.lowerUndergarment.shortName != "" && pc.hasGenitals())
 		{
 			output(", causing your [pc.lowerUndergarment] to grow ");
 			if(pc.hasCock()) output("tight");

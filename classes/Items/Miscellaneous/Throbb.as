@@ -161,7 +161,7 @@
 				//Make a hyper dick bigger!
 				else if (pc.cockLengthUnlocked(arg, 30))
 				{
-					kGAMECLASS.output("\n\nDespite its immensity, your [pc.cock " + arg + "] has become painfully hard. You idly wonder how you have enough blood to make a dong this size this rigid before another wave of excitement washes that away. Pre-cum is practically pissing out of your slit as you start pumping your expanding length, rolling down the [pc.cockHead " + arg + "] in waves of cream that are sure to be outshone by your inevitable, massive orgasm. You're throbbing so hard, thickening with each beat of your heart. It feels so good that you can't fathom how why you haven't cum yet. It's like you're drowning in an ocean of burning, oozing lust, and the only thing exposed is the steadily growing tip of your length. <b>Your [pc.cock " + arg + "] has gotten even bigger!</b>");
+					kGAMECLASS.output("\n\nDespite its immensity, your [pc.cock " + arg + "] has become painfully hard. You idly wonder how you have enough blood to make a dong this size this rigid before another wave of excitement washes that away. Pre-cum is practically pissing out of your slit as you start pumping your expanding length, rolling down the [pc.cockHead " + arg + "] in waves of cream that are sure to be outshone by your inevitable, massive orgasm. You're throbbing so hard, thickening with each beat of your heart. It feels so good that you can't fathom why you haven't cum yet. It's like you're drowning in an ocean of burning, oozing lust, and the only thing exposed is the steadily growing tip of your length. <b>Your [pc.cock " + arg + "] has gotten even bigger!</b>");
 					temp = Math.round(10 + rand(30))/10;
 					if(pc.hasPerk("Hung")) temp *= 2;
 					pc.cocks[arg].cLengthRaw += temp;
@@ -258,9 +258,10 @@
 					pc.shiftCock(arg,GLOBAL.TYPE_CANINE);
 					if(pcRace.indexOf("ausar") != -1) pc.cocks[arg].delFlag(GLOBAL.FLAG_SHEATHED);
 				}
-				else if(InCollection(pcRace, "kaithrit", "half-kaithrit", "feline-morph")) pc.shiftCock(arg,GLOBAL.TYPE_FELINE);
+				else if(InCollection(pcRace, "kaithrit", "half-kaithrit", "feline-morph", "nekomata", "chakat")) pc.shiftCock(arg,GLOBAL.TYPE_FELINE);
 				else if(InCollection(pcRace, "leithan", "half-leithan")) pc.shiftCock(arg,GLOBAL.TYPE_SNAKE);
 				else if(InCollection(pcRace, "kui-tan", "half kui-tan")) pc.shiftCock(arg, GLOBAL.TYPE_KUITAN);
+				else if(InCollection(pcRace, "gryvain", "half-gryvain")) pc.shiftCock(arg, GLOBAL.TYPE_GRYVAIN);
 				else if(InCollection(pcRace, "horse-morph", "part horse-morph", "laquine", "ovir", "half-ovir", "minotaur", "centaur", "horse-taur", pc.mlpRace())) pc.shiftCock(arg, GLOBAL.TYPE_EQUINE);
 				else if(pcRace == "vulpine-morph") pc.shiftCock(arg,GLOBAL.TYPE_VULPINE);
 				else if(pcRace == "zil") pc.shiftCock(arg,GLOBAL.TYPE_BEE);
