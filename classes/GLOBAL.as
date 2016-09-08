@@ -11,7 +11,7 @@
 		public static const CLASS_NAMES:Array = [
 			"Smuggler",
 			"Mercenary",
-			"Engineer"
+			"Tech Specialist"
 		];
 		
 		public static const UPBRINGING_PAMPERED:uint						= 0;
@@ -72,6 +72,7 @@
 		public static const FLAG_ABSORBENT:int								= 39;
 		public static const FLAG_SLIGHTLY_PUMPED:int 						= 40;
 		public static const FLAG_PUMPED:int 								= 41;
+		public static const FLAG_TAILCUNT:int                               = 42;
 		
 		public static const FLAG_NAMES:Array = [
 			"OFFSET -- INVALID",
@@ -116,6 +117,7 @@
 			"Absorbent",
 			"Slightly Pumped",
 			"Fully Pumped",
+			"Tailcunt",
 		];
 		
 		public static const VALID_SKIN_FLAGS:Array = [
@@ -161,10 +163,8 @@
 		public static const TYPE_MOUSE:int                                  = 26;
 		public static const TYPE_MOUSEMAN:int                               = 27;
 		public static const TYPE_DOVE:int									= 28;
-		/*
-		public static const TYPE_UNUSED29:int                               = 29;
-		public static const TYPE_UNUSED30:int                               = 30;
-		*/
+		public static const TYPE_DOGGIE:int									= 29;
+		public static const TYPE_DRYAD:int                                  = 30;
 		public static const TYPE_DRAGONFLY:int                              = 31;
 		public static const TYPE_MLP:int                                    = 32;
 		public static const TYPE_CUNTSNAKE:int                              = 33;
@@ -200,6 +200,8 @@
 		public static const TYPE_NARWHAL:int								= 63;
 		public static const TYPE_HRAD:int									= 64;
 		public static const TYPE_GRYVAIN:int								= 65;
+		public static const TYPE_KORGONNE:int								= 66;
+		public static const TYPE_FLOWER:int									= 67;
 		
 		public static const TYPE_NAMES:Array = [
 			"Human",
@@ -231,8 +233,8 @@
 			"Mouse",
 			"Mouseman",
 			"Dove",
-			"UNUSED",
-			"UNUSED",
+			"Floppy Dog",
+			"Dryad",
 			"Dragonfly",
 			"MLP",
 			"Cuntsnake",
@@ -268,6 +270,8 @@
 			"Narwhal",
 			"Hradian",
 			"Gryvain",
+			"Korgonne",
+			"Flower",
 		];
 		
 		public static const VALID_FACE_TYPES:Array = [
@@ -392,6 +396,7 @@
 			TYPE_MYR,
 			TYPE_DEMONIC,
 			TYPE_NYREA,
+			TYPE_FLOWER,
 		];
 
 		public static const VALID_ARM_FLAGS:Array = [
@@ -475,7 +480,8 @@
 			TYPE_GOAT,
 			TYPE_RHINO,
 			TYPE_NARWHAL,
-			TYPE_GRYVAIN
+			TYPE_GRYVAIN,
+			TYPE_DRYAD,
 		];
 		
 		public static const VALID_WING_TYPES:Array = [
@@ -494,6 +500,7 @@
 			TYPE_MYR,
 			TYPE_DOVE,
 			TYPE_GRYVAIN,
+			TYPE_COCKVINE,
 		];
 		
 		// None is for specifying no tail, which would normally pull the HUMAN name.
@@ -539,6 +546,7 @@
 			FLAG_FLUFFY,
 			FLAG_SMOOTH,
 			FLAG_TAILCOCK,
+			FLAG_TAILCUNT,
 			FLAG_FURRED,
 			FLAG_SCALED,
 			FLAG_OVIPOSITOR,
@@ -580,6 +588,9 @@
 			TYPE_SIREN,
 			TYPE_COCKVINE,
 			TYPE_GRYVAIN,
+			TYPE_FELINE,
+			TYPE_VULPINE,
+			TYPE_FLOWER,
 		];
 		
 		//SKINTYPES
@@ -589,7 +600,9 @@
 		public static const SKIN_TYPE_GOO:int                                    = 3;
 		public static const SKIN_TYPE_CHITIN:int                                 = 4;
 		public static const SKIN_TYPE_FEATHERS:int                               = 5;
-		public static const SKIN_TYPE_LATEX:int                               = 6;
+		public static const SKIN_TYPE_LATEX:int                                  = 6;
+		public static const SKIN_TYPE_PLANT:int                                  = 7;
+		public static const SKIN_TYPE_BARK:int                                   = 8;
 		
 		public static const SKIN_TYPE_NAMES:Array = [
 			"Skin",
@@ -599,6 +612,8 @@
 			"Chitin",
 			"Feathers",
 			"Latex",
+			"Plant",
+			"Bark",
 		];
 		
 		//NIPPLETYPES
@@ -664,6 +679,8 @@
 		public static const FLUID_TYPE_BLUEBERRY_YOGURT:int						= 22;
 		public static const FLUID_TYPE_HRAD_CUM:int								= 23;
 		public static const FLUID_TYPE_SPECIAL_CUMGOO:int						= 24;
+		public static const FLUID_TYPE_FRUIT_CUM:int							= 25;
+		public static const FLUID_TYPE_FRUIT_GIRLCUM:int						= 26;
 		
 		public static const FLUID_TYPE_NAMES:Array = [
 			"Milk",
@@ -691,6 +708,8 @@
 			"Blueberry Yogurt",
 			"Hradian Cum",
 			"Goo Cum",
+			"Fruit Cum",
+			"Fruit Girl Cum",
 		];
 		
 		public static const FLUID_TYPE_SHORT:Array = [
@@ -719,6 +738,8 @@
 			"B.Ygrt",
 			"H.Cum",
 			"GooCum",
+			"F.Cum",
+			"F.GCum",
 		];
 		
 		public static const VALID_CUM_TYPES:Array = [
@@ -737,6 +758,7 @@
 			FLUID_TYPE_HRAD_CUM,
 			FLUID_TYPE_VANAE_CUM,
 			FLUID_TYPE_SPECIAL_CUMGOO,
+			FLUID_TYPE_FRUIT_CUM,
 		];
 		
 		public static const VALID_GIRLCUM_TYPES:Array = [
@@ -749,6 +771,7 @@
 			FLUID_TYPE_SPECIAL_GOO,
 			FLUID_TYPE_NYREA_GIRLCUM,
 			FLUID_TYPE_HRAD_CUM,
+			FLUID_TYPE_FRUIT_GIRLCUM,
 		];
 		
 		public static const VALID_MILK_TYPES:Array = [
@@ -774,6 +797,7 @@
 		public static const HAIR_TYPE_GOO:int							= 3;
 		public static const HAIR_TYPE_TENTACLES:int						= 4;
 		public static const HAIR_TYPE_QUILLS:int						= 5;
+		public static const HAIR_TYPE_PLANT:int							= 6;
 		
 		public static const HAIR_TYPE_NAMES:Array = [
 			"Hair",
@@ -782,6 +806,7 @@
 			"Gooey",
 			"Tentacles",
 			"Quills",
+			"Plant",
 		];
 
 		public static const GENITAL_SPOT_WAIST:int		= 0;
@@ -869,7 +894,8 @@
 			TYPE_SIREN,
 			TYPE_GABILANI,
 			TYPE_NYREA,
-			TYPE_GRYVAIN
+			TYPE_GRYVAIN,
+			TYPE_FLOWER,
 		];
 		
 		// As far as I can tell, at time of writing there are no flags currently used/assigned to vaginas
@@ -982,6 +1008,7 @@
 		public static const ITEM_FLAG_HEAT_GENERATOR:int				= 13; // Some other item that provides total avoidance of damage from cold, but not nessecerily a belt.
 		public static const ITEM_FLAG_REDUCED_ACCURACY:int				= 14;
 		public static const ITEM_FLAG_COMBAT_DRONE:int					= 15; // For combat drones
+		public static const ITEM_FLAG_INTERNAL_POWER:int				= 16; // For drones that do not require shields in order to function.
 		
 		public static const ITEM_FLAG_NAMES:Array = [
 			"Bow Weapon",
@@ -999,7 +1026,8 @@
 			"Heat Belt",
 			"Heat Generator",
 			"Reduces Accuracy",
-			"Combat Drone"
+			"Combat Drone",
+			"Self-Powered",
 		];
 		
 		/**

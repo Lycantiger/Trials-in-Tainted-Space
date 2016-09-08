@@ -142,7 +142,15 @@ package classes.Characters
 					if(cumFrom.cumQ() >= 2000) kGAMECLASS.honeyPotBump(true);
 				}
 			}
+			if(hasPerk("Dumb4Cum"))
+			{
+				kGAMECLASS.dumb4CumReset();
+			}
 			if(cumFrom != null && cumflationEnabled()) cumflationHappens(cumFrom,4);
+			if(cumFrom != null)
+			{
+				if(hasPerk("Autofellatio Queen") && cumFrom is PlayerCharacter) this.energy(35);
+			}
 			return false;
 		}
 		// *shrug*
@@ -240,6 +248,11 @@ package classes.Characters
 			delete d.resistances;
 			delete d.bonusResistances;
 			delete d.bonusLustVuln;
+		}
+		
+		override public function getCombatName():String
+		{
+			return "you";
 		}
 	}
 }

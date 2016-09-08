@@ -463,7 +463,7 @@ public function dontStareAtZatBitch():void
 public function stareDontStareEpilogue():void
 {
 	output("\n\nFrom her voluminous breasts downwards and running down her sides are a bunch of dark, spikey appendages. Each one is jointed and pressed flush to her skin. They resemble tiny armor chunks. She has six fingered hands concealed by dark elbow length gloves.");
-	output("\n\nThings become progressively more alien further down. Her thighs and legs are thick, bulky, and completely lack feet. Instead, they end in double-pronged toes. Despite her unconventional built, she still wears a garter belt, sexy lace panties, and a pair of stockings.");
+	output("\n\nThings become progressively more alien further down. Her thighs and legs are thick, bulky, and completely lack feet. Instead, they end in double-pronged toes. Despite her unconventional build, she still wears a garter belt, sexy lace panties, and a pair of stockings.");
 	output("\n\n<i>“My my, am I really that interesting? I feel quite flattered. I’ll let you look a little longer, I suppose.”</i> The half-nude alien woman offers in her rich, husky voice. <i>“...Though I am being rather rude. How can you get a good look when you can’t see all there is to me?”</i>");
 
 	// First time meeting a Siel.
@@ -482,7 +482,7 @@ public function stareDontStareEpilogue():void
 		output("\n\nAll of her...? You suddenly realize there’s more of her body hidden behind the clothes rack, and peer warily past her curvaceous hips. As promised, she pulls it out... and out... and out.... She’s a siel!");
 		output("\n\nThe blue-skinned woman notices the glimmer of recognition in your eyes, and quirks an eyebrow. <i>“Oh? Seems you’ve met my kind before. I hope it was a pleasant encounter.”</i>");
 		output("\n\nThe siel then moves past you, making sure to brush against your side. There, right near your ear, she stops for a brief moment and leans in to whisper. <i>“If it wasn’t, I’ll have to make things right, you know. By ");
-		if(!pc.isNude()) output("stripping off that [pc.gear] of yours");
+		if(!pc.isNude()) output("stripping off " + (pc.hasArmor() ? "that outfit" : "those undies") + " of yours");
 		else output("taking advantage of your nudity");
 		output(" and having my way with you.”</i>");
 	}
@@ -1351,8 +1351,8 @@ public function tieAndTeaseWithXanthe():void
 	{
 		output(" from behind. One of her six-fingered hands slips down to your ");
 	}
-	if(pc.hasVagina()) output("[pc.vaginas]");
-	else if(pc.hasCock()) output("[pc.hasCock]");
+	if(pc.hasVagina() && !pc.hasCock()) output("[pc.vaginas]");
+	else if(pc.hasCock() && !pc.hasVagina()) output("[pc.cocks]");
 	else output("loins");
 	output(" and pointedly teases ");
 	if(pc.totalGenitals() == 1) output("it");
@@ -1626,7 +1626,7 @@ public function shePaysAttentionToYouSlut():void
 	clearOutput();
 	showXanthe();
 	output("You beg with all your heart and soul, trying to show her just how much you want her to play with you. Deep down, you know your pleading makes no difference - your Mistress will do what she wants to do with you.");
-	output("\n\nStepping back, she walks around and runs her fingers teasingly down your spine. The gentle grazing of your [pc.skinFurScales] causes you to shiver with delight. Ever the tiniest of her touches plays you like an instrument.");
+	output("\n\nStepping back, she walks around and runs her fingers teasingly down your spine. The gentle grazing of your [pc.skinFurScales] causes you to shiver with delight. Even the tiniest of her touches plays you like an instrument.");
 	output("\n\n<i>“...I think I’ll turn you into my beautiful living canvas today.”</i> Xanthe leans in and kisses at the side of your neck. She sucks on the nape and then bites it, leaving a pointed kiss-sized bruise. <i>“I’m going to leave my marks on you. That way, when you’re travelling about, everyone will know who you REALLY belong to.”</i>");
 
 	output("\n\nThe thought of being possessively marked makes your [pc.legsNoun] quiver with delight. You want to be claimed, to be totally <i>owned</i> by her. People should know who you belong to, both in body and mind.");

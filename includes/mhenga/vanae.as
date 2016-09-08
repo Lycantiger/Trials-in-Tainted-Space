@@ -198,7 +198,7 @@ public function vanaeTFScene():void
 	var options:Array = [];
 	
 	if (pc.hasCock()) options.push("cock");
-	if (pc.balls > 0) options.push("balls");
+	if (pc.balls > 0 && ((pc.ballDiameter() < 8 && !pc.hasPerk("Bulgy")) || (pc.ballDiameter() < 16 && pc.hasPerk("Bulgy")))) options.push("balls");
 	if (pc.hasVagina()) options.push("vagina");
 	
 	switch (options[rand(options.length)])
@@ -237,12 +237,19 @@ public function vanaeTFScene():void
 				//pc.balls = 2;
 			}
 			
-			if((pc.ballSizeRaw < 8 && !pc.hasPerk("Bulgy")) || (pc.ballSizeRaw < 16 && pc.hasPerk("Bulgy")))
+			//Bulgy grows fastah~
+			if(pc.hasPerk("Bulgy"))
 			{
-				if (pc.ballSizeRaw < 6) pc.ballSizeRaw += 0.5;
-				if (pc.ballSizeRaw < 4) pc.ballSizeRaw += 1;
+				pc.ballSizeRaw += 3;
+				if (pc.ballDiameter() < 10) pc.ballSizeRaw += 2;
+				if (pc.ballDiameter() < 6) pc.ballSizeRaw += 2;
 			}
-			pc.ballSizeRaw++;
+			else
+			{
+				pc.ballSizeRaw += 1.5;
+				if (pc.ballDiameter() < 10) pc.ballSizeRaw += 1;
+				if (pc.ballDiameter() < 6) pc.ballSizeRaw += 1;	
+			}
 
 			output(" The new weight catches you by surprise as");
 			if(pc.balls == 1) output(" it");
@@ -420,7 +427,7 @@ public function vanaePCVictory():void
 			// [Vaginal Sex] [Tit Fuck] [Nipple Fuck] [Squirt & Jerk] [Cunnilingus] 
 			// [Sixty Nine - BJ] [Sixty Nine - Cunni] [Tenta Sex - Vag] [Tenta Sex - Anal] [Milk Bath]
 			
-			if(pc.hasCockTail())
+			if(pc.hasTail(GLOBAL.TYPE_COCKVINE))
 			{
 				//scene is currently cockvine only; can be tweaked for future suitable (i.e. with own gonads) types
 				addButton(9,"UseTailCock",cockvineTailPlusVanaeVictory,undefined,"Use Tailcock", "Let the busty, blind cumslut impregnate herself with your parasitic, vine-spawning tail-cock.");
@@ -451,7 +458,7 @@ public function vanaePCVictory():void
 			// No requirements
 			addButton(1, "Cunnilingus", vanaeVictorySexIntro, "maiden_cunni", "Cunnilingus", "Claim her alien pussy with your mouth and eat her out.");
 			
-			if(pc.hasCockTail())
+			if(pc.hasTail(GLOBAL.TYPE_COCKVINE))
 			{
 				addButton(2,"UseTailCock",cockvineTailPlusVanaeVictory,undefined,"Use Tailcock", "Trick the poor, sweet, blind girl into giving her maidenhead to your parasitic tail-cock.");
 			}
@@ -500,7 +507,7 @@ public function noThanksTentaSlutImOut():void
 	if (enemy is MaidenVanae) output(" vanae maiden.");
 	else output(" vanae huntress.");
 	
-	output("\n\nYou scavenge through her dropped equippment, looking for anything that might be of use, before quickly and quietly leaving the area.");
+	output("\n\nYou scavenge through her dropped equipment, looking for anything that might be of use, before quickly and quietly leaving the area.");
 	
 	output("\n\n");
 	
@@ -669,7 +676,7 @@ public function vanaeVictorySexIntro(scene:String):void
 	{
 		output(". She seems to shiver with anticipation, clearly willing to"); 
 		if (pc.isAss()) output(" carry out your command");
-		else output(" fulfil your request");
+		else output(" fulfill your request");
 		output(".");
 
 		// if Vanae Maiden & not 69 Cunni & not lust loss
@@ -2346,7 +2353,10 @@ public function vanaeMaidenPCDefeat():void
 		
 		output("\n\n<i>“I can’t believe I won with my sex appeal. Wait until I tell everyone about it! Well, after I help you with your frustration problem, that is.”</i> She suddenly looks a little bashful, <i>“A-as... as the victor, I have to take my prize. That’s the way my people do things. Any problems with that?”</i>");
 		
-		output("\n\nYou shake your head feverishly. If you don’t orgasm soon, you feel as if you’ll go mad! You strip off your [pc.gear] and lewdly demand that she take her prize.");
+		output("\n\nYou shake your head feverishly. If you don’t orgasm soon, you feel as if you’ll go mad!");
+		if(!pc.isCrotchExposed() && !pc.isChestExposed() && !pc.isAssExposed()) output(" You strip off your [pc.gear] and ");
+		else output(" You ");
+		output("lewdly demand that she take her prize.");
 		
 		output("\n\n<i>“Geez, you’re really forward about it! I guess it can’t be helped. You better be gentle, okay?”</i> she chastises you.");
 	}

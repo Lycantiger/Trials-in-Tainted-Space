@@ -83,7 +83,7 @@ public function boardKirosShipRescue(destination:String):void
 {
 	clearOutput();
 
-	output("The ship proves remarkable easy to dock with. In fact, as soon as your navigational computer begins to plot a course, it automatically extends a docking umbilical in your direction. You guide your craft through the necessary navigational hoops in order to properly connect with it and grab your gear. This could be dangerous.");
+	output("The ship proves remarkably easy to dock with. In fact, as soon as your navigational computer begins to plot a course, it automatically extends a docking umbilical in your direction. You guide your craft through the necessary navigational hoops in order to properly connect with it and grab your gear. This could be dangerous.");
 
 	// [Normal ship menu with exit ship as if had landed at a planet]
 	shipLocation = "KIROS SHIP AIRLOCK";
@@ -332,6 +332,12 @@ public function kirosShipChubnookiUpDaButt():void
 	kiro.loadInAss(pc);
 	kiro.loadInAss(pc);
 	kiro.loadInMouth(pc);
+	for (var i:int = 0; i < 20; i++)
+	{
+		kiro.orgasm();
+	}
+	pc.orgasm();
+	pc.orgasm();
 	applyCumSoaked(pc);
 
 	processTime(60+rand(15));

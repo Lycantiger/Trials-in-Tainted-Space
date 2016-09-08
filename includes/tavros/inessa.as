@@ -562,7 +562,7 @@ public function inessaBuyGo():void
 	showInessa();
 	author("JimThermic");
 	shopkeep = chars["INESSA"];
-	shopkeep.keeperBuy = "You tell Inessa that you’d like to buy something. She beams and brings up a holographic stock guide.\n\n<i>“Sure! What would you like - clothes, sex gear, something else..?”</i>";
+	shopkeep.keeperBuy = "You tell Inessa that you’d like to buy something. She beams and brings up a holographic stock guide.\n\n<i>“Sure! What would you like - clothes, sex gear, something else..?”</i>\n";
 	//Have biowhip if gotten to Myrellion.
 	if(flags["PLANET_3_UNLOCKED"] != undefined)
 	{
@@ -1618,6 +1618,10 @@ public function newTexanGanguBangu():void
 	pc.exhibitionism(2);
 	pc.exhibitionism(2);
 	pc.exhibitionism(2);
+	
+	applyCumSoaked(pc);
+	applyCumSoaked(pc);
+	
 	clearMenu();
 	addButton(0,"Next",mainGameMenu);
 }
@@ -1769,6 +1773,10 @@ public function gravCuffsCowgirlBangu():void
 	pc.exhibitionism(2);
 	pc.exhibitionism(2);
 	pc.exhibitionism(2);
+	
+	applyPussyDrenched(pc);
+	applyPussyDrenched(pc);
+	
 	clearMenu();
 	addButton(0,"Next",cowGirlGanguBanguEpilogue);
 }

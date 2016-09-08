@@ -458,7 +458,12 @@ public function petPexiga():void
 public function eatHomeCooking(energyGain:Number = 0):void
 {
 	pc.energy(energyGain);
-	pc.createStatusEffect("Home Cooking", 50, 0, 0, 0, false, "Icon_Cooking", "While you are well fed, you recover more while resting.", false, 3000);
+	if(pc.hasStatusEffect("Home Cooking"))
+	{
+		if(pc.statusEffectv1("Home Cooking") < 50) pc.setStatusValue("Home Cooking", 1, 50);
+		pc.setStatusMinutes("Home Cooking", 3000);
+	}
+	else pc.createStatusEffect("Home Cooking", 50, 0, 0, 0, false, "Icon_Cooking", "While you are well fed, you recover more while resting.", false, 3000);
 }
 
 //[Food] (ie, Yammi’s Menu)
@@ -658,7 +663,7 @@ public function getYammiSmut():void
 	yammiFollowerDisplay();
 	author("Savin");
 	output("When Yammi turns her attention momentarily from you to a pot that needs stirring, you lean against the refrigerator beside her and gently clear your throat.");
-	output("\n\n<i>“So I’ve been thinking...”</i> you say, watching the gentle rise and fall of the sparadat’s perky chest beneath her tight red dress with keen interest. When you pause, Yammi stops and glances ");
+	output("\n\n<i>“So I’ve been thinking...”</i> you say, watching the gentle rise and fall of the sparadat’s perky chest beneath her tight-fitting apron with keen interest. When you pause, Yammi stops and glances ");
 	if(pc.tallness >= 72) output("up ");
 	else if(pc.tallness < 66) output("down ");
 	output("at you. She smiles and swings her spoon over to you, cutting the second half of your sentence off and planting the edge of the spoon on your lip.");
@@ -961,7 +966,10 @@ public function vaginalWithYammi(x:int = 0):void
 	output("\n\n<i>“Oh, [pc.name],”</i> Yammi murmurs, bracing her hands on the countertop. You take the opportunity to pull out, slowly ");
 	if(x >= 0) output("withdrawing your [pc.cock " + x + "]");
 	else output("deactivating your strapon");
-	output(" and leaning your bare back against the refrigerator. Patting her butt, you pick up your [pc.gear] and slowly but surely get yourself back together. While you do, Yammi takes a long moment to catch her breath before grabbing her bra and starting to redress.");
+	output(" and leaning your bare back against the refrigerator. Patting her butt, you pick up your");
+	if(!pc.isCrotchExposed()) output(" [pc.gear]");
+	else output(" gear");
+	output(" and slowly but surely get yourself back together. While you do, Yammi takes a long moment to catch her breath before grabbing her bra and starting to redress.");
 	output("\n\n<i>“That was... that was good,”</i> she says with a grin, leaning ");
 	if(pc.tallness >= 72) output("up");
 	else if(pc.tallness < 60) output("down");

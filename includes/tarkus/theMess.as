@@ -435,9 +435,7 @@ public function stephIrsonEpisodeTwo():void
 	else if(pc.hasVagina()) x = rand(pc.totalVaginas());
 	//[Watch Screen]
 	clearOutput();
-	author("Savin");
-	showName("STEPH\nIRSON");
-	showBust("STEPH_2");
+	stephHeader(2);
 	
 	flags["STEPH_WATCHED"] = 1;
 	
@@ -453,7 +451,7 @@ public function stephIrsonEpisodeTwo():void
 	output("\n\nNearing the slumbering goo-girl, Steph holds still a hair's breadth away, camera zooming in for a close-up of the gray's cute little face as she snores quietly. <i>\"Must be in standby mode,\"</i> Steph says, relief palpable in her voice. <i>\"Look at how she mimics a human. Kinda cute, innit she?\"</i>");
 	output("\n\nAs she speaks, Steph pulls on a blue rubber glove, giving it a quiet snap before reaching up to the goo. <i>\"Let me show just how gooey this creature is. She's like gelatin to the touch, see-\"</i>");
 	output("\n\nAs soon as Steph prods the gey goo's tit, of course, its eyes snap open. The goo sits up, looking around in total confusion before her gaze alights on the galactic huntress, whose hand quickly retracts, owner stumbling away as the goo wakes up.");
-	output("\n\n<i>\"Oh my gosh! A-are you Steph Irson!?\"</i> the goo says suddenly, surging toward Steph, stoppin just a few inches away, faces practically pressed together. <i>\"Ohmygoshohmygosh! I love your show! Are we on right now? HI MOM! I mean, I don't really have a mom, but if I did I'd totally say 'hi' to her right now!\"</i>");
+	output("\n\n<i>\"Oh my gosh! A-are you Steph Irson!?\"</i> the goo says suddenly, surging toward Steph, stopping just a few inches away, faces practically pressed together. <i>\"Ohmygoshohmygosh! I love your show! Are we on right now? HI MOM! I mean, I don't really have a mom, but if I did I'd totally say 'hi' to her right now!\"</i>");
 	output("\n\nSteph stares at the goo-girl for a long moment. <i>\"W-what?\"</i>");
 	output("\n\nThe goo circles the galactic bounty hunter, in half-disbelief. <i>\"A-and this is what you look like up up close? Oh gosh I'm so happy to meet you! A real person, a star! Eep, I'm nervous! I have all your shirts, Miss Irson, oh and I used to have a Galactic Huntress action figure but a rust monster stole it and used it like a dildo and fucked me with it! That was super fun, though. OH! W-would you sign, uh... I KNOW! Sign my tits!\"</i>");
 	output("\n\nThe goo makes an exaggerated motion, as if pulling her non-existent shirt up, presenting her gigantic bosom to Steph. Finally recovering from her surprise, the huntress runs a hand through her sandy hair, pulling out a marker from her pocket.");
@@ -470,9 +468,8 @@ public function stephIrsonEpisodeTwo():void
 public function stephIrsonEpisodeTwoDashTwo():void
 {
 	clearOutput();
-	author("Savin");
-	showName("STEPH\nIRSON");
-	showBust("STEPH_2_NUDE");
+	stephHeader(2, true);
+	
 	var x:int = 0;
 	if(pc.hasCock()) x = pc.smallestCockIndex();
 	else if(pc.hasVagina()) x = rand(pc.totalVaginas());
@@ -517,7 +514,7 @@ public function stephIrsonEpisodeTwoDashTwo():void
 	//If PC is fucking TrapCL: 
 	if(timesDelilahSexed() > 0 && (pc.hasCock() || pc.hasVagina()))
 	{
-		output("\n\nWell, who're you to say no? You let down your guard, releasing your body to fulfil its most primal wishes with the help of the trappy bartender. ");
+		output("\n\nWell, who're you to say no? You let down your guard, releasing your body to fulfill its most primal wishes with the help of the trappy bartender. ");
 		//Dicksex:
 		if(pc.hasCock()) output("The girly-boy gives a muted little gasp as she feels your cock swelling inside her hole, and her fingers lace through yours as you grunt and spurt, hips slapping up into her butt as your [pc.cock " + x + "] unleashes its creamy load right up her tailhole.");
 		else output("<i>\"C-cumming,\"</i> the trap moans, burying her face in your [pc.chest] as her hip-thrusts reach a new height of speed, slamming into your [pc.vagina " + x + "] with wild abandon. Grinning, you tell her to let it go, wrapping your [pc.legOrLegs] around her hips to draw her deep inside as she cums, flooding your sex with hot, creamy seed.");
@@ -526,6 +523,9 @@ public function stephIrsonEpisodeTwoDashTwo():void
 	else pc.lust(33);
 	output("\n\nWith a giddy cry of pleasure, the goo-girl lets out a powerful squirt of girl-cum right into the camera drone's eye, sending it tumbling back as its owner and her gooey captor cum and cum, screaming and bucking their hips on the ground. A few moments later, the screen goes black, followed by an <i>\"Experiencing Technical Difficulties\"</i> warning superimposed over the <i>Galactic Huntress</i> logo. In the background, though, you can still hear Steph moaning as the goo finishes with her.");
 	output("\n\n<i>\"So, you're gonna edit all that out in post, right?\"</i> the goo giggles, just as a commercial comes on.");
+	
+	watchStephEpisodeBroadcast("STEPH_GOOED");
+	
 	processTime(19);
 	clearMenu();
 	addButton(0,"Next",mainGameMenu);
@@ -596,7 +596,7 @@ public function delilahSlutTraining():void
 	else output(" even more pregnant than you are");
 	output(". Slowly, though, it dawns on you that hogging this magnificent cock all for yourself would just be too greedy. And besides, Del needs to learn how to handle a real monster cock.");
 	output("\n\nMarshalling your willpower, you manage to pull yourself off the horse-girl's prick. She gives a low grunt, clearly displeased, until you point to your friend beside you. Just in time, too: the two of you glance over just as Del throws her head back with a whimpering cry of pleasure. Her john's hilt-deep in her hold, chest heaving as he pumps his load into her quivering hole, filling her with her first load of the day. You give the massively-endowed horsegirl a little push toward the now-vacant slut as her first cock is withdrawn from her, its owner staggering off to recover.");
-	output("\n\nYou watch with glee as the horsecock-toting hermaphrodite circles around you and the fellow currently making use of your ass, stepping up behind Del as the lithe little trap recovers from her ass-pounding. She goes wide-eyed as a two-inch thick rod of horsemeat suddenly flops onto her back, looking almost as long as her torso at this angle. You lick your lips, suddenly reminded of just how <i>hard</i> you are as you watch the horse-herm rub the flare of her prick through Del's spread crack, slathering the her crown with the runoff seed of the last john to take your trappy protege.");
+	output("\n\nYou watch with glee as the horsecock-toting hermaphrodite circles around you and the fellow currently making use of your ass, stepping up behind Del as the lithe little trap recovers from her ass-pounding. She goes wide-eyed as a two-inch thick rod of horsemeat suddenly flops onto her back, looking almost as long as her torso at this angle. You lick your lips, suddenly reminded of just how <i>hard</i> you are as you watch the horse-herm rub the flare of her prick through Del's spread crack, slathering her crown with the runoff seed of the last john to take your trappy protege.");
 	output("\n\nSufficiently lubed up, the equine babe gives you a sultry wink and thrusts her hips towards Del's. The trap-slut screams in pain and pleasure as she's suddenly and violently stretched open on the blunted flare of the horsecock. As she's introduced to the thick, throbbing horsemember, you're suddenly all-too-aware of the cock pumping into your own hole, and how very near to orgasm you are. You try to hold back");
 	if(pc.legCount > 1) output(", clenching your [pc.cock] tight between your [pc.legs]");
 	output(", focusing not on the thick, spunk-slathered schlong pounding your hole, but on the huge, girthy, gut-distending rod slowly splitting Delilah in half. She's being physically lifted from the ground on the rigid length of horsemeat probing her guts, feet dangling as the towering equine's dick visibly stretches her body out, showing through her once-flat belly as it travels through the tight passage of her ass.");
